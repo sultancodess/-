@@ -1,0 +1,31 @@
+# Ignore all files
+
+
+# Except this .gitignore file
+.env
+.env.local
+!.gitignore     
+# Ignore all node modules
+node_modules/
+# Ignore all log files
+*.log
+# Ignore all build directories
+
+
+build/
+dist/
+# Ignore all temporary files
+tmp/    
+temp/
+# Ignore all coverage reports
+coverage/
+# Ignore all IDE specific files
+.idea/
+.vscode/
+# Ignore all OS generated files
+.DS_Store
+Thumbs.db
+
+# Ignore all test files
+*.test.js
+

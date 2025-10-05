@@ -20,6 +20,8 @@ import Analytics from './pages/dashboard/Analytics'
 import Profile from './pages/dashboard/Profile'
 import Settings from './pages/dashboard/Settings'
 import Upgrade from './pages/dashboard/Upgrade'
+import Connections from './pages/dashboard/Connections'
+import PersonaScore from './pages/dashboard/PersonaScore'
 
 // Components
 import ProtectedRoute from './components/auth/ProtectedRoute'
@@ -44,11 +46,13 @@ function App() {
                 </ProtectedRoute>
               }>
                 <Route index element={<Dashboard />} />
+                <Route path="profile" element={<Profile />} />
+                <Route path="connections" element={<Connections />} />
+                <Route path="score" element={<PersonaScore />} />
                 <Route path="trends" element={<Trends />} />
                 <Route path="generator" element={<PostGenerator />} />
                 <Route path="calendar" element={<Calendar />} />
                 <Route path="analytics" element={<Analytics />} />
-                <Route path="profile" element={<Profile />} />
                 <Route path="settings" element={<Settings />} />
                 <Route path="upgrade" element={<Upgrade />} />
               </Route>

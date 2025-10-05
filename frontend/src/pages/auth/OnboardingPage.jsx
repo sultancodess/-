@@ -111,7 +111,7 @@ const OnboardingPage = () => {
   }
 
   const finishOnboarding = () => {
-    toast.success('Welcome to PersonaPilot! 🚀')
+    toast.success('Welcome to Parsona! 🚀')
     navigate('/dashboard')
   }
 
@@ -188,7 +188,7 @@ const OnboardingPage = () => {
               <Zap className="h-6 w-6 text-white" />
             </div>
             <span className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              PersonaPilot.io
+              Parsona
             </span>
           </div>
           <h1 className="text-3xl font-bold mb-2">Welcome, {user?.name}! 👋</h1>

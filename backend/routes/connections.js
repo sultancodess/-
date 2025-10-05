@@ -5,12 +5,12 @@ const auth = require('../middleware/auth')
 
 const router = express.Router()
 
-// @route   GET /api/connections/twitter/connect
-// @desc    Connect Twitter account
+// @route   GET /api/connections/twitter/auth
+// @desc    Redirect to Twitter OAuth
 // @access  Private
-router.get('/twitter/connect', auth, (req, res) => {
+router.get('/twitter/auth', auth, (req, res) => {
   const twitterAuthUrl = `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=${process.env.TWITTER_CLIENT_ID}&redirect_uri=${process.env.TWITTER_CALLBACK_URL}&scope=tweet.read%20tweet.write%20users.read%20offline.access&state=${req.user._id}&code_challenge=challenge&code_challenge_method=plain`
-  res.json({ authUrl: twitterAuthUrl })
+  res.redirect(twitterAuthUrl)
 })
 
 // @route   GET /api/connections/twitter/callback
@@ -58,19 +58,19 @@ router.get('/twitter/callback', async (req, res) => {
       await user.save()
     }
 
-    res.redirect(`${process.env.FRONTEND_URL}/dashboard/settings?twitter=connected`)
+    res.redirect(`${process.env.FRONTEND_URL}/dashboard/connections?twitter=connected`)
   } catch (error) {
     console.error('Twitter connection error:', error)
-    res.redirect(`${process.env.FRONTEND_URL}/dashboard/settings?error=twitter_failed`)
+    res.redirect(`${process.env.FRONTEND_URL}/dashboard/connections?error=twitter_failed`)
   }
 })
 
-// @route   GET /api/connections/linkedin/connect
-// @desc    Connect LinkedIn account
+// @route   GET /api/connections/linkedin/auth
+// @desc    Redirect to LinkedIn OAuth
 // @access  Private
-router.get('/linkedin/connect', auth, (req, res) => {
+router.get('/linkedin/auth', auth, (req, res) => {
   const linkedinAuthUrl = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${process.env.LINKEDIN_CLIENT_ID}&redirect_uri=${process.env.LINKEDIN_CALLBACK_URL}&scope=r_liteprofile%20r_emailaddress%20w_member_social&state=${req.user._id}`
-  res.json({ authUrl: linkedinAuthUrl })
+  res.redirect(linkedinAuthUrl)
 })
 
 // @route   GET /api/connections/linkedin/callback
@@ -117,10 +117,10 @@ router.get('/linkedin/callback', async (req, res) => {
       await user.save()
     }
 
-    res.redirect(`${process.env.FRONTEND_URL}/dashboard/settings?linkedin=connected`)
+    res.redirect(`${process.env.FRONTEND_URL}/dashboard/connections?linkedin=connected`)
   } catch (error) {
     console.error('LinkedIn connection error:', error)
-    res.redirect(`${process.env.FRONTEND_URL}/dashboard/settings?error=linkedin_failed`)
+    res.redirect(`${process.env.FRONTEND_URL}/dashboard/connections?error=linkedin_failed`)
   }
 })
 

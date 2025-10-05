@@ -1,0 +1,426 @@
+# Product Requirements Document (PRD)
+
+**Product Name:** Persona
+
+**Prepared For:**  Development Team
+
+**Version:** 1.0
+
+**Date:** October 2025
+
+---
+
+## 1. Introduction
+
+### 1.1 Problem Statement
+
+Building a strong personal brand is critical for professionals to stand out in today’s competitive market. Platforms like LinkedIn and X are primary channels for networking, job opportunities, and thought leadership. However, most individuals struggle with:
+
+- Creating consistent, impactful content.
+- Understanding trends relevant to their role/industry.
+- Measuring their persona strength and engagement.
+
+Personal branding is now one of the most important factors for career growth, getting jobs, networking, or even building global presence. To help individuals achieve this, I want to build a SaaS product called **Parsona**.
+
+**Parsona** helps users create and strengthen their online presence across social media platforms. For now, we are focusing on **X** and **LinkedIn**. Our primary users are anyone looking to grow their presence on these platforms to enhance networking opportunities, career prospects, and global visibility.
+
+### How It Works
+
+1. **Role Setup:** Users define their professional role and interests in our platform. This allows Parsona to provide personalized recommendations for content and strategies to improve personal branding.
+2. **AI-Powered Content Suggestions:** Using a **RAG (Retrieval-Augmented Generation) system**, our platform analyzes user data, tracks gaps in their online presence, and identifies trending topics relevant to their role.
+3. **Content Generation & Optimization:** Based on this analysis, Parsona can generate high-quality social media posts and also suggest improvements for bios, headlines, and other profile elements.
+4. **User-Created Posts:** Users can also create their own posts on the platform. The RAG system, combined with social media and role-specific data, ensures that every post is optimized for maximum impact, making your personal branding professional and effective.
+
+In short, **Parsona** is a personal branding platform that leverages AI, social media insights, and role-specific data to help users grow their presence, improve engagement, and present themselves like professionals on X and LinkedIn.
+
+  
+
+### 1.2 Solution Overview
+
+**Persona** is a SaaS platform that automates personal branding through:
+
+- Persona setup & AI-driven scoring.
+- LinkedIn & X account integrations.
+- AI-powered post generation based on persona + trends.
+- Automated scheduling & publishing.
+- Engagement analytics & growth reports.
+
+---
+
+## 2. Objectives & Goals
+
+- Help users **create a global presence** on LinkedIn and X.
+- Provide **AI-driven insights** to improve their personal branding.
+- Automate content creation with **trend-based posts**.
+- Offer analytics to track engagement and optimize strategy.
+- Monetize through **freemium + premium subscriptions**.
+
+---
+
+## 3. Target Audience
+
+- **Job Seekers** – Building strong profiles to attract recruiters.
+- **Freelancers/Creators** – Growing audience and reputation.
+- **Professionals** – Strengthening thought leadership.
+- **Students** – Preparing for internships and first jobs.
+
+---
+
+## 4. System Architecture
+
+**Model:** Monolithic, Client-Server Architecture
+
+- **Frontend:** React (Web), Mobile (future)
+- **Backend:** Node.js/Express (Monolithic service)
+- **Database:** MongoDB (User data, Persona JSON, Posts, Analytics)
+- **APIs:** LinkedIn API, Twitter API, OpenAI API
+- **Payments:** Razorpay / Stripe
+- **Scheduler:** Cron Jobs for post scheduling
+
+---
+
+## 5. Features & Requirements
+
+### 5.1 User Features
+
+1. **Authentication**
+    - Sign up/Login with Email, Google, LinkedIn, or X.
+    - JWT-based session management.
+2. **Persona Setup**
+    - Define role, skills, industry.
+    - Save persona in JSON format.
+    - Used as system prompt base for AI.
+3. **Premium Subscription**
+    - Free plan: Limited posts/month.
+    - Premium plan: Unlimited posts, advanced analytics.
+    - Payment gateway integration (Stripe/Razorpay).
+4. **Persona Score**
+    - AI evaluates profile strength.
+    - Provides feedback & improvement suggestions.
+5. **AI Trend Finder**
+    - Fetch role/industry-specific trends from LinkedIn & Twitter.
+    - NLP filtering to map relevant trends.
+6. **AI Post Generator**
+    - Combines Persona JSON + Persona Score + Trends.
+    - Generates 2–3 draft posts using OpenAI.
+    - User can edit/save/schedule/publish.
+7. **Post Management**
+    - Drafts, scheduled posts, published posts.
+    - Cron jobs for scheduled publishing.
+8. **Engagement Analytics**
+    - Track likes, shares, comments.
+    - Persona growth over time.
+
+---
+
+### 5.2 Admin Features
+
+- Manage users & subscriptions.
+- Monitor API usage & costs.
+- Dashboard for system health.
+- Content moderation (optional).
+
+---
+
+## 6. User Flow (High-Level)
+
+1. User lands on website → registers/logs in.
+2. Sets up persona (role, industry, skills).
+3. Connects LinkedIn & Twitter accounts via OAuth.
+4. If premium → validates subscription (Stripe/Razorpay).
+5. Persona Score is calculated.
+6. Trends fetched (LinkedIn/Twitter APIs).
+7. AI generates post drafts.
+8. User edits → schedules → publishes posts.
+9. Engagement analytics collected.
+10. Reports generated for user.
+
+---
+
+## 7. Flowchart (System Logic)
+
+```mermaid
+flowchart TD
+
+    A([Start]) --> B[Landing Page]
+    B --> C[Login/Register]
+    C --> D[Dashboard]
+
+    D --> E[Role Setup]
+    E -->|Save Persona JSON| F[System Prompt Storage]
+
+    D --> G[Account Integrations]
+    G -->|OAuth Tokens| H[(LinkedIn / X APIs)]
+
+    D --> I{Premium Validation?}
+    I -->|No| J[Buy Premium]
+    J --> K[Razorpay / Stripe Payment Gateway]
+    K --> I
+    I -->|Yes| L[Persona Score Calculation]
+
+    L -->|Fetch Profile Data| M[(LinkedIn / X APIs)]
+    L --> N[AI Evaluates Persona Score + Feedback]
+
+    N --> O[AI Trend Finder]
+    O -->|Fetch LinkedIn Trends| P[(LinkedIn Trends API)]
+    O -->|Fetch Twitter Trends| Q[(Twitter Trends API)]
+    O --> R[NLP Filter + Role Mapping]
+
+    R --> S[AI Post Generator]
+    S -->|Persona JSON + Score + Trends| T[(OpenAI API)]
+    T --> U[Generate Post Drafts]
+
+    U --> V{User Action}
+    V -->|Edit/Save Draft| D
+    V -->|Schedule Post| W[DB + Cron Job]
+    V -->|Publish Now| X[(LinkedIn/X Posting API)]
+
+    X --> Y[Engagement Analytics]
+    Y -->|Likes, Comments, Shares| Z[(Analytics DB)]
+    Z --> L
+
+    W --> Y
+    Y --> AA[Report Generation: View/Share/Download]
+    AA --> End([End])
+
+```
+
+---
+
+## 8. Use Case Diagram
+
+```mermaid
+flowchart TD
+
+    %% Actors
+    User([User])
+    Admin([Admin])
+    LinkedInAPI([LinkedIn API])
+    TwitterAPI([Twitter API])
+    OpenAIAPI([OpenAI API])
+    Payment([Payment Gateway])
+
+    %% System Boundary
+    subgraph PersonaSystem [Persona SaaS System]
+        RL[(Register/Login)]
+        MD[(Manage Dashboard)]
+        SR[(Setup Role & Persona)]
+        IA[(Integrate Accounts)]
+        PP[(Purchase Premium)]
+        VP[(Validate Premium Access)]
+        PS[(Calculate Persona Score)]
+        FT[(Find Trends)]
+        GP[(Generate AI Post)]
+        ED[(Edit/Save Drafts)]
+        SP[(Schedule Post)]
+        PB[(Publish Post)]
+        VA[(View Analytics)]
+        GR[(Generate Reports)]
+    end
+
+    %% Relationships
+    User --> RL
+    User --> MD
+    User --> SR
+    User --> IA
+    User --> PP
+    User --> GP
+    User --> ED
+    User --> SP
+    User --> PB
+    User --> VA
+    User --> GR
+
+    Admin --> VP
+    Admin --> VA
+
+    IA --> LinkedInAPI
+    IA --> TwitterAPI
+    PS --> LinkedInAPI
+    PS --> TwitterAPI
+    FT --> LinkedInAPI
+    FT --> TwitterAPI
+    GP --> OpenAIAPI
+    PP --> Payment
+
+    %% Includes
+    MD --> RL:::include
+    VP --> PP:::include
+    GP --> FT:::include
+    GP --> PS:::include
+    VA --> GR:::include
+
+    %% Extends
+    ED -.-> GP:::extend
+    SP -.-> ED:::extend
+    PB -.-> ED:::extend
+    VA -.-> PB:::extend
+
+    %% Styles
+    classDef include stroke-dasharray: 5 5,stroke:#00ccff,color:#00ccff;
+    classDef extend stroke-dasharray: 5 5,stroke:#ff8800,color:#ff8800;
+
+```
+
+---
+
+## 9. Non-Functional Requirements
+
+- **Scalability:** Initially monolithic, future modular migration.
+- **Security:** OAuth for social accounts, JWT for sessions, SSL everywhere.
+- **Performance:** Post generation ≤ 3s, Analytics refresh ≤ 30s.
+- **Availability:** 99.5% uptime SLA.
+- **Compliance:** GDPR-ready, data stored securely.
+
+---
+
+## 10. Monetization Strategy
+
+- **Freemium model** (basic persona scoring + limited posts).
+- **Premium Subscription** (~$10–15/month): unlimited posts, detailed analytics, advanced AI insights.
+- Future enterprise tier for recruiters & agencies.
+
+---
+
+## 11. Success Metrics
+
+- DAU/MAU growth.
+- Conversion rate free → premium.
+- Average engagement (likes, comments, shares).
+- Retention (monthly churn < 5%).
+- ARPU (Average Revenue Per User).
+
+---
+
+---
+
+### 1. Landing Page
+
+- **Header**: Logo, Login, Register, CTA (Get Started)
+- **Hero Section**: Headline + Subtext + CTA (Try Free / Buy Premium)
+- **Features Section**: Cards (Persona Scoring, AI Trends, Post Generator, Analytics)
+- **Testimonials / Social Proof**
+- **Footer**: About, Contact, Privacy, Terms
+
+---
+
+### 2. Authentication
+
+- **Login Page**: Email, Password, Login Button, “Forgot Password”
+- **Register Page**: Name, Email, Password, Confirm Password, Sign Up
+- **OAuth Buttons**: Google / LinkedIn / GitHub
+
+---
+
+### 3. Dashboard (Main Hub)
+
+- **Sidebar Navigation**:
+    - Role & Persona
+    - Account Integrations
+    - Premium
+    - Persona Score
+    - AI Trend Finder
+    - AI Post Generator
+    - Drafts & Scheduler
+    - Analytics & Reports
+    - Admin (if role = admin)
+- **Main View**: Welcome banner + Quick Stats + CTA buttons
+
+---
+
+### 4. Role & Persona Setup
+
+- **Form Fields**: Role, Skills, Interests, Bio, Goals
+- **Save Persona** button → stores JSON
+- **Persona Preview Card**
+
+---
+
+### 5. Account Integrations
+
+- **LinkedIn OAuth Button**
+- **Twitter OAuth Button**
+- **Status Indicators**: “Connected / Not Connected”
+- **Revoke Access** option
+
+---
+
+### 6. Premium Upgrade
+
+- **Pricing Page**: Cards (Free / Premium Monthly / Premium Yearly)
+- **Payment Gateway Modal**: Razorpay / Stripe integration
+- **Confirmation State**: Success, Failure, Retry
+
+---
+
+### 7. Persona Score Page
+
+- **Fetch Button**: Get profile data from LinkedIn/Twitter
+- **Score Card**: Persona Score (0–100)
+- **AI Feedback Section**: Text recommendations
+- **Recalculate Button**
+
+---
+
+### 8. AI Trend Finder
+
+- **Tabs**: LinkedIn Trends / Twitter Trends
+- **Filtered Trends List** (based on persona role)
+- **Search/Filter Bar**
+- **CTA: Use This Trend** → Goes to Post Generator
+
+---
+
+### 9. AI Post Generator
+
+- **Inputs Panel**: Persona JSON + Trends + Score
+- **Generate Button** → OpenAI API call
+- **Output Area**: Post Drafts (Cards)
+- **Actions**: Save Draft, Edit Draft, Regenerate
+
+---
+
+### 10. Drafts & Scheduler
+
+- **Drafts List**: Table (Title, Date, Status)
+- **Edit Draft Modal**: Update content
+- **Actions**:
+    - Save Draft
+    - Schedule Post (set date/time → cron job)
+    - Publish Now → LinkedIn/Twitter API
+
+---
+
+### 11. Analytics & Reports
+
+- **Analytics Dashboard**:
+    - KPIs: Likes, Comments, Shares, Reach
+    - Graphs (line chart, bar chart)
+- **Reports Section**:
+    - Export as PDF/CSV
+    - Share Report via Link
+    - Download Button
+
+---
+
+### 12. Admin Panel
+
+- **Users Management**: List of users, roles, premium status
+- **Validate Premium Access**: Manually approve/revoke
+- **System Logs**
+- **Analytics Overview (Global)**
+
+---
+
+## ⚙️ **Technical Stack**
+
+| Layer | Technology |
+| --- | --- |
+| Frontend | React.js (Vite + JSX) + Tailwind CSS + Framer Motion |
+| Backend | Node.js + Express |
+| Auth |  JWT. google ,linkdin, x |
+| Database | MongoDB Atlas |
+| Payment | Razorpay |
+|  |  |
+
+**End of PRD**

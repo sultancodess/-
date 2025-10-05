@@ -334,6 +334,108 @@ const optimizeForEngagement = async (content, platform = "twitter") => {
   }
 };
 
+const calculatePersonaScore = async (userProfile, socialData) => {
+  try {
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+
+    const systemPrompt = `You are Parsona's AI Persona Scoring Engine.
+
+🎯 Goal: Analyze user's social media presence and provide a comprehensive persona score (0-100) with detailed feedback.
+
+⚙️ Dynamic Inputs:
+user_profile = ${JSON.stringify(userProfile)}
+social_data = ${JSON.stringify(socialData)}
+
+📊 Scoring Categories (each 0-100):
+1. Profile Completeness (25%): Bio quality, profile picture, header, contact info
+2. Content Quality (30%): Post engagement, relevance, professionalism
+3. Consistency (25%): Posting frequency, brand voice consistency
+4. Engagement Rate (20%): Likes, comments, shares relative to followers
+
+📌 Analysis Rules:
+- Calculate overall score as weighted average
+- Provide specific feedback for each category
+- Suggest 3-5 actionable improvements
+- Prioritize recommendations (high/medium/low)
+- Consider user's role and industry context
+
+📤 Output JSON:
+{
+  "overallScore": 75,
+  "breakdown": {
+    "profileCompleteness": 80,
+    "contentQuality": 70,
+    "consistency": 75,
+    "engagementRate": 65
+  },
+  "feedback": [
+    {
+      "title": "Optimize Your Bio",
+      "description": "Add industry keywords and clear value proposition",
+      "priority": "high",
+      "category": "profileCompleteness"
+    }
+  ],
+  "strengths": ["Consistent posting", "Good engagement"],
+  "improvements": ["Bio optimization", "Content variety"]
+}`;
+
+    const result = await model.generateContent({
+      contents: [{ role: "user", parts: [{ text: systemPrompt }] }],
+      generationConfig: {
+        temperature: 0.3,
+        topK: 40,
+        topP: 0.95,
+        maxOutputTokens: 1024,
+      },
+    });
+
+    const response = await result.response;
+    let text = response.text();
+
+    // Try to parse JSON response
+    try {
+      const jsonMatch = text.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        const parsedResponse = JSON.parse(jsonMatch[0]);
+        return parsedResponse;
+      }
+    } catch (parseError) {
+      console.log("JSON parsing failed for persona score");
+    }
+
+    // Fallback scoring
+    return {
+      overallScore: 65,
+      breakdown: {
+        profileCompleteness: 70,
+        contentQuality: 60,
+        consistency: 65,
+        engagementRate: 65
+      },
+      feedback: [
+        {
+          title: "Complete Your Profile",
+          description: "Add a professional bio and profile picture to improve your score",
+          priority: "high",
+          category: "profileCompleteness"
+        },
+        {
+          title: "Post More Consistently",
+          description: "Regular posting helps build audience engagement",
+          priority: "medium",
+          category: "consistency"
+        }
+      ],
+      strengths: ["Active on social media"],
+      improvements: ["Profile optimization", "Content strategy"]
+    };
+  } catch (error) {
+    console.error("AI persona scoring error:", error);
+    throw new Error("Failed to calculate persona score");
+  }
+};
+
 const generateTrendInsights = async (userProfile, trendsData) => {
   try {
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
@@ -418,6 +520,7 @@ module.exports = {
   generateTrendBasedContent,
   generateCustomContent,
   generateTrendInsights,
+  calculatePersonaScore,
   analyzeContent,
   generateVariations,
   optimizeForEngagement,

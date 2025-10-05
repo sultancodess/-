@@ -15,7 +15,9 @@ import {
   Zap,
   LogOut,
   Moon,
-  Sun
+  Sun,
+  Link as LinkIcon,
+  Target
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/contexts/AuthContext'
@@ -29,12 +31,13 @@ const DashboardLayout = () => {
 
   const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: Home },
-    { name: 'Trends', href: '/dashboard/trends', icon: TrendingUp },
-    { name: 'Post Generator', href: '/dashboard/generator', icon: PenTool },
-    { name: 'Calendar', href: '/dashboard/calendar', icon: Calendar },
-    { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },
-    { name: 'Profile & Roles', href: '/dashboard/profile', icon: User },
-    { name: 'Settings', href: '/dashboard/settings', icon: Settings },
+    { name: 'Role & Persona', href: '/dashboard/profile', icon: User },
+    { name: 'Account Integrations', href: '/dashboard/connections', icon: LinkIcon },
+    { name: 'Persona Score', href: '/dashboard/score', icon: Target },
+    { name: 'AI Trend Finder', href: '/dashboard/trends', icon: TrendingUp },
+    { name: 'AI Post Generator', href: '/dashboard/generator', icon: PenTool },
+    { name: 'Drafts & Scheduler', href: '/dashboard/calendar', icon: Calendar },
+    { name: 'Analytics & Reports', href: '/dashboard/analytics', icon: BarChart3 },
   ]
 
   const isActive = (href) => location.pathname === href
@@ -66,7 +69,7 @@ const DashboardLayout = () => {
                 <Zap className="h-5 w-5 text-white" />
               </div>
               <span className="text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                PersonaPilot
+                Parsona
               </span>
             </Link>
             <Button

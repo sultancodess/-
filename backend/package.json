@@ -1,7 +1,7 @@
 {
-  "name": "personapilot-backend",
+  "name": "parsona-backend",
   "version": "1.0.0",
-  "description": "Backend API for PersonaPilot.io",
+  "description": "Backend API for Parsona - AI-Powered Personal Branding Platform",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

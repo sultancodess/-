@@ -116,6 +116,36 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
+  // Persona Score
+  personaScore: {
+    overallScore: {
+      type: Number,
+      min: 0,
+      max: 100
+    },
+    breakdown: {
+      profileCompleteness: { type: Number, min: 0, max: 100 },
+      contentQuality: { type: Number, min: 0, max: 100 },
+      consistency: { type: Number, min: 0, max: 100 },
+      engagementRate: { type: Number, min: 0, max: 100 }
+    },
+    feedback: [{
+      title: String,
+      description: String,
+      priority: {
+        type: String,
+        enum: ['high', 'medium', 'low']
+      },
+      category: String
+    }],
+    strengths: [String],
+    improvements: [String],
+    history: [{
+      score: Number,
+      date: Date
+    }],
+    lastUpdated: Date
+  },
   // Metadata
   lastLoginAt: Date,
   isActive: {

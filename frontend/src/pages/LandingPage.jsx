@@ -163,7 +163,7 @@ const LandingPage = () => {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              Everything you need for personal branding
+              Everythings you need for personal branding
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               From persona analysis to content creation, Parsona provides

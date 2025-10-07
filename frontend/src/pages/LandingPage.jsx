@@ -5,11 +5,9 @@ import {
   TrendingUp,
   Calendar,
   BarChart3,
-  Bell,
   Users,
   Check,
   ArrowRight,
-  Twitter,
   Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";

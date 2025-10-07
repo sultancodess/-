@@ -31,7 +31,11 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/parsona',
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
-.then(() => console.log('✅ Connected to MongoDB'))
+.then(() => {
+  console.log('✅ Connected to MongoDB')
+  // Initialize scheduler service after database connection
+  require('./services/schedulerService')
+})
 .catch(err => console.error('❌ MongoDB connection error:', err))
 
 // Routes
@@ -42,6 +46,8 @@ app.use('/api/posts', require('./routes/posts'))
 app.use('/api/analytics', require('./routes/analytics'))
 app.use('/api/billing', require('./routes/billing'))
 app.use('/api/connections', require('./routes/connections'))
+app.use('/api/admin', require('./routes/admin'))
+app.use('/api/docs', require('./routes/docs'))
 
 // Health check
 app.get('/api/health', (req, res) => {

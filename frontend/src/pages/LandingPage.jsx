@@ -220,9 +220,8 @@ const LandingPage = () => {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
               >
                 <Card
-                  className={`h-full relative ${
-                    plan.popular ? "border-primary shadow-lg scale-105" : ""
-                  }`}
+                  className={`h-full relative ${plan.popular ? "border-primary shadow-lg scale-105" : ""
+                    }`}
                 >
                   {plan.popular && (
                     <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
